@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      terraform: 0.15.0
+    commands:
+      # Install dependencies
+      yum update -y
+      yum install -y git unzip curl
+      # Install Terraform
+      curl -O https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_linux_amd64.zip
+      unzip terraform_0.15.0_linux_amd64.zip
+      mv terraform /usr/local/bin/
+  build:
+    commands:
+      export AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id user/datavid/secret_access_key --query SecretString --output text)
+      # Clone repository
+      git clone https://github.com/hyperverseglobalconsulting/s3_buckets.git
+      # Change to directory with Terraform script
+      cd datavid_s3_buckets
+      # Initialize Terraform and install plugins
+      terraform init
+      # Apply Terraform changes
+      terraform apply -auto-approve
