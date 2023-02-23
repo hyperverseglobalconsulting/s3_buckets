@@ -1,25 +1,77 @@
 version: 0.2
 
+env:
+  #variables:
+     # key: "value"
+     # key: "value"
+  #parameter-store:
+     # key: "value"
+     # key: "value"
+  secrets-manager:
+     # key: secret-id:json-key:version-stage:version-id
+     AWS_SECRET_ACCESS_KEY: arn:aws:secretsmanager:us-east-2:093487613626:secret:user/datavid/secret_access_key-Xuo9LZ:secret_access_key
+     # key: secret-id:json-key:version-stage:version-id
+  #exported-variables:
+     # - variable
+     # - variable
+  #git-credential-helper: yes
+#batch:
+  #fast-fail: true
+  #build-list:
+  #build-matrix:
+  #build-graph:
 phases:
   install:
-    runtime-versions:
-      terraform: 0.15.0
+    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
+    #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
+    # runtime-versions:
+      # terraform: 0.15.0
+      # name: version
     commands:
       # Install dependencies
-      yum update -y
-      yum install -y git unzip curl
+      #- yum update -y
+      - yum install -y git unzip curl
       # Install Terraform
-      curl -O https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_linux_amd64.zip
-      unzip terraform_0.15.0_linux_amd64.zip
-      mv terraform /usr/local/bin/
+      - curl -O https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_linux_amd64.zip
+      - unzip terraform_0.15.0_linux_amd64.zip
+      - mv terraform /usr/local/bin/
+  #pre_build:
+    #commands:
+      # - command
+      # - command
   build:
     commands:
-      export AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id user/datavid/secret_access_key --query SecretString --output text)
+       - echo $AWS_SECRET_ACCESS_KEY
       # Clone repository
-      git clone https://github.com/hyperverseglobalconsulting/s3_buckets.git
+       - git clone https://github.com/hyperverseglobalconsulting/s3_buckets.git
       # Change to directory with Terraform script
-      cd datavid_s3_buckets
+       - cd s3_buckets
       # Initialize Terraform and install plugins
-      terraform init
+       - terraform init
+       - terraform refresh
+      # plan build
+       - terraform plan -out=tfplan
       # Apply Terraform changes
-      terraform apply -auto-approve
+       - terraform apply tfplan
+  #post_build:
+    #commands:
+      # - command
+      # - command
+#reports:
+  #report-name-or-arn:
+    #files:
+      # - location
+      # - location
+    #base-directory: location
+    #discard-paths: yes
+    #file-format: JunitXml | CucumberJson
+#artifacts:
+  #files:
+    # - location
+    # - location
+  #name: $(date +%Y-%m-%d)
+  #discard-paths: yes
+  #base-directory: location
+#cache:
+  #paths:
+    # - paths
