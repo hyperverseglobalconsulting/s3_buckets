@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "datavid_pdfconverter" {
+data "aws_s3_bucket" "datavid_pdfconverter" {
   bucket = "datavid-pdfconverter"
 }
 
