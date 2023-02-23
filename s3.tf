@@ -22,6 +22,6 @@ resource "aws_s3_bucket_object" "project_data_table_corners" {
 
 resource "aws_s3_bucket_object" "project_data_bbox_images" {
   bucket = aws_s3_bucket.datavid_pdfconverter.id
-  key    = var.bbox_images
+  key    = var.key_prefix_bbox_images
   acl    = "private"
 }
