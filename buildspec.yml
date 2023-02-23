@@ -9,7 +9,7 @@ env:
      # key: "value"
   secrets-manager:
      # key: secret-id:json-key:version-stage:version-id
-     AWS_SECRET_ACCESS_KEY: "arn:aws:secretsmanager:us-east-2:093487613626:secret:user/datavid/secret_access_key-Xuo9LZ:secret_access_key"
+     AWS_SECRET_ACCESS_KEY: arn:aws:secretsmanager:us-east-2:093487613626:secret:user/datavid/secret_access_key-Xuo9LZ:secret_access_key
      # key: secret-id:json-key:version-stage:version-id
   #exported-variables:
      # - variable
